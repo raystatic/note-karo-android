@@ -3,4 +3,14 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="custom_black">#070706</color>
+    <color name="light_orange">#FE9A37</color>
+    <color name="lime">#CBDB57</color>
+    <color name="light_purple">#9585BA</color>
+    <color name="dark_brown">#5C4F45</color>
+    <color name="light_red">#F96A4B</color>
+    <color name="light_brown">#DEA44D</color>
+    <color name="brown">#9E5C32</color>
+    <color name="custom_grey">#3A3A3A</color>
+    <color name="white">#fff</color>
 </resources>
