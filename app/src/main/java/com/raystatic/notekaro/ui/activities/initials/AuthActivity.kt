@@ -1,8 +1,7 @@
-package com.raystatic.notekaro.ui.activities
+package com.raystatic.notekaro.ui.activities.initials
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -21,11 +20,10 @@ import com.raystatic.notekaro.other.ProgressBarExtension.hide
 import com.raystatic.notekaro.other.ProgressBarExtension.show
 import com.raystatic.notekaro.other.Status
 import com.raystatic.notekaro.other.Utility
+import com.raystatic.notekaro.ui.activities.HomeActivity
 import com.raystatic.notekaro.ui.viewmodels.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_auth.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -47,7 +45,8 @@ class AuthActivity : AppCompatActivity() {
         setContentView(R.layout.activity_auth)
 
         if (!prefManager.getString(Constants.JWT_TOKEN).isNullOrEmpty()){
-            startActivity(Intent(this,HomeActivity::class.java))
+            startActivity(Intent(this,
+                HomeActivity::class.java))
             finish()
         }
 
@@ -86,7 +85,8 @@ class AuthActivity : AppCompatActivity() {
                                 prefManager.saveString(Constants.USER_AVATAR, user.avatar)
                                 prefManager.saveString(Constants.JWT_TOKEN,res._token)
 
-                                startActivity(Intent(this,HomeActivity::class.java))
+                                startActivity(Intent(this,
+                                    HomeActivity::class.java))
                                 finish()
 
                             }

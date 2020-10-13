@@ -1,4 +1,4 @@
-package com.raystatic.notekaro.ui.activities
+package com.raystatic.notekaro.ui.activities.initials
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +19,7 @@ import com.raystatic.notekaro.other.ProgressBarExtension.hide
 import com.raystatic.notekaro.other.ProgressBarExtension.show
 import com.raystatic.notekaro.other.Status
 import com.raystatic.notekaro.other.Utility
+import com.raystatic.notekaro.ui.activities.HomeActivity
 import com.raystatic.notekaro.ui.viewmodels.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -81,7 +82,8 @@ class SplashActivity : AppCompatActivity() {
                                 prefManager.saveString(Constants.USER_AVATAR, user.avatar)
                                 prefManager.saveString(Constants.JWT_TOKEN,res._token)
 
-                                startActivity(Intent(this,HomeActivity::class.java))
+                                startActivity(Intent(this,
+                                    HomeActivity::class.java))
                                 finish()
 
                             }
