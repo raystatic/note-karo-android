@@ -1,5 +1,6 @@
 package com.raystatic.notekaro.ui.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -40,6 +41,10 @@ class HomeActivity : AppCompatActivity() {
         notesRvAdapter = NotesRvAdapter()
         rvNotes.layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
         rvNotes.adapter = notesRvAdapter
+
+        fabNewNote.setOnClickListener {
+            startActivity(Intent(this,CreateNoteActivity::class.java))
+        }
 
         vm.getAllNotes(token)
 
