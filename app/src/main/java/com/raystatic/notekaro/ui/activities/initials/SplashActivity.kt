@@ -15,10 +15,10 @@ import com.raystatic.notekaro.R
 import com.raystatic.notekaro.data.requests.AuthRequest
 import com.raystatic.notekaro.other.Constants
 import com.raystatic.notekaro.other.PrefManager
-import com.raystatic.notekaro.other.ProgressBarExtension.hide
-import com.raystatic.notekaro.other.ProgressBarExtension.show
 import com.raystatic.notekaro.other.Status
 import com.raystatic.notekaro.other.Utility
+import com.raystatic.notekaro.other.ViewExtension.hide
+import com.raystatic.notekaro.other.ViewExtension.show
 import com.raystatic.notekaro.ui.activities.HomeActivity
 import com.raystatic.notekaro.ui.viewmodels.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint

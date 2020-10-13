@@ -4,13 +4,13 @@ import android.opengl.Visibility
 import android.view.View
 import android.widget.ProgressBar
 
-object ProgressBarExtension {
+object ViewExtension {
 
-    fun ProgressBar.show() {
+    fun View.show() {
         this.visibility = View.VISIBLE
     }
 
-    fun ProgressBar.hide(){
+    fun View.hide(){
         this.visibility = View.GONE
     }
 
