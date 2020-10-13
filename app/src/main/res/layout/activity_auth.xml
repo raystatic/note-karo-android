@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/custom_black"
     android:id="@+id/rootView"
-    tools:context="com.raystatic.notekaro.ui.activities.AuthActivity">
+    tools:context="com.raystatic.notekaro.ui.activities.initials.AuthActivity">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvAuthTitle"
