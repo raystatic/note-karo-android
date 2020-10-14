@@ -1,10 +1,13 @@
 package com.raystatic.notekaro.data.local.notes
 
+import android.os.Parcelable
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @Entity(tableName = "note")
 data class Note(
 
@@ -33,4 +36,4 @@ data class Note(
 
     @ColumnInfo(name = "updatedAt")
     val updatedAt: String?=""
-)
+):Parcelable

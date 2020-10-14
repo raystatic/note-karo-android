@@ -23,26 +23,20 @@
             android:padding="8dp"
             android:id="@+id/imgBack"/>
 
-<!--        <androidx.cardview.widget.CardView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            app:cardCornerRadius="5dp">-->
-<!--            -->
-<!--            <RelativeLayout-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:background="@color/custom_grey"-->
-<!--                android:padding="8dp">-->
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Untitled"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:layout_toEndOf="@+id/imgBack"
+            android:layout_toStartOf="@+id/btnSave"
+            android:textAlignment="center"
+            android:id="@+id/tvNoteTitle"
+            />
 
-<!--                <ImageView-->
-<!--                    android:layout_width="30dp"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:src="@drawable/ic_edit_pen"/>-->
 
-<!--            </RelativeLayout>-->
-
-<!--        </androidx.cardview.widget.CardView>-->
 
         <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
@@ -72,7 +66,7 @@
         android:padding="10dp"
         android:maxLines="2"
         android:gravity="top|left"
-        android:visibility="visible"
+        android:visibility="gone"
         android:textColor="@color/white"
         android:id="@+id/etTitle"/>
 

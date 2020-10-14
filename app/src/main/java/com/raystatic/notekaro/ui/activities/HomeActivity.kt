@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.raystatic.notekaro.R
+import com.raystatic.notekaro.data.local.notes.Note
 import com.raystatic.notekaro.other.Constants
 import com.raystatic.notekaro.other.PrefManager
 import com.raystatic.notekaro.other.Status
@@ -21,7 +22,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), NotesRvAdapter.NotesListener {
 
     @Inject
     lateinit var prefManager:PrefManager
@@ -38,7 +39,7 @@ class HomeActivity : AppCompatActivity() {
 
         val token = prefManager.getString(Constants.JWT_TOKEN).toString()
 
-        notesRvAdapter = NotesRvAdapter()
+        notesRvAdapter = NotesRvAdapter(this)
         rvNotes.layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
         rvNotes.adapter = notesRvAdapter
 
@@ -52,6 +53,12 @@ class HomeActivity : AppCompatActivity() {
 
         subscribeToObservers()
 
+    }
+
+    override fun onNoteClicked(note: Note) {
+        val intent = Intent(this, ShowNoteActivity::class.java)
+        intent.putExtra("note_data", note)
+        startActivity(intent)
     }
 
     private fun subscribeToObservers() {

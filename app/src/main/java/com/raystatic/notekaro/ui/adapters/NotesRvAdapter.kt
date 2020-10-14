@@ -10,9 +10,13 @@ import com.raystatic.notekaro.data.local.notes.Note
 import com.raystatic.notekaro.other.Utility
 import kotlinx.android.synthetic.main.note_item.view.*
 
-class NotesRvAdapter : RecyclerView.Adapter<NotesRvAdapter.NotesViewHolder>(){
+class NotesRvAdapter(var listener:NotesListener) : RecyclerView.Adapter<NotesRvAdapter.NotesViewHolder>(){
 
     private var data:List<Note>?=null
+
+    interface NotesListener{
+        fun onNoteClicked(note: Note)
+    }
 
     fun setData(list: List<Note>){
         data = list
@@ -42,6 +46,12 @@ class NotesRvAdapter : RecyclerView.Adapter<NotesRvAdapter.NotesViewHolder>(){
             tvNoteTitle.text = note?.title
 
             tvDate.text = Utility.getFormattedDateFromISO(note?.updatedAt.toString())
+
+            setOnClickListener {
+                note?.let { it1 ->
+                    listener.onNoteClicked(it1)
+                }
+            }
 
         }
 

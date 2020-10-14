@@ -1,10 +1,14 @@
 package com.raystatic.notekaro.ui.activities
 
+import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.raystatic.notekaro.R
+import com.raystatic.notekaro.data.local.notes.Note
 import com.raystatic.notekaro.data.requests.CreateNoteRequest
 import com.raystatic.notekaro.other.Constants
 import com.raystatic.notekaro.other.PrefManager
@@ -15,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.sasikanth.colorsheet.ColorSheet
 import dev.sasikanth.colorsheet.utils.ColorSheetUtils
 import kotlinx.android.synthetic.main.activity_create_note.*
+import kotlinx.android.synthetic.main.title_dialog.view.*
 import timber.log.Timber
 import java.lang.Math.random
 import javax.inject.Inject
@@ -34,17 +39,28 @@ class CreateNoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_note)
 
+        val note = intent.getParcelableExtra<Note>("note_data")
+
+        note?.let {
+            tvNoteTitle.text = it.title
+            etText.setText(it.text)
+        }
+
         imgBack.setOnClickListener {
-            //show confirmation menu
+            finish()
         }
 
         val colors = resources.getIntArray(R.array.colors)
 
      //   selectedColor = savedInstanceState?.getInt(COLOR_SELECTED) ?: colors.first()
 
+        tvNoteTitle.setOnClickListener {
+            showTitleDialog()
+        }
+
         btnSave.setOnClickListener {
 
-            val title = etTitle.text.toString()
+            val title = tvNoteTitle.text.toString()
             val text = etText.text.toString()
 
             if (title.isEmpty()){
@@ -57,29 +73,13 @@ class CreateNoteActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-//            ColorSheet().cornerRadius(8)
-//                .colorPicker(
-//                    colors = colors,
-//                    selectedColor = selectedColor,
-//                    listener = {color->
-//                        selectedColor = color
-//                    }
-//                ).show(supportFragmentManager)
+            if (title == "Untitled"){
+                showTitleDialog()
+                return@setOnClickListener
+            }
 
             selectedColor = colors[Random.nextInt(0,6)]
             val themeColor = ColorSheetUtils.colorToHex(selectedColor)
-
-
-            Timber.d("text length ${text.trim().length}")
-
-//            title = when {
-//                text.trim().length > 30 -> {
-//                    text.substring(0..Random.nextInt(15,29))
-//                }
-//                else -> {
-//                    text.substring(0..Random.nextInt(0, text.length -1))
-//                }
-//            }
 
             Timber.d("theme color choosen $themeColor")
 
@@ -91,6 +91,32 @@ class CreateNoteActivity : AppCompatActivity() {
         }
 
         subscribeToObservers()
+
+    }
+
+    private fun showTitleDialog() {
+        val dialog = Dialog(this)
+        val view = LayoutInflater.from(this).inflate(R.layout.title_dialog, null)
+
+        dialog.apply {
+            setContentView(view)
+            setCancelable(true)
+            view.etTitle.hint = this@CreateNoteActivity.tvNoteTitle.text.toString()
+            view.btnSave.setOnClickListener {
+                val title = view.etTitle.text.toString()
+                if (title.isEmpty()){
+                    Utility.showToast("Please provide a title", this@CreateNoteActivity)
+                    return@setOnClickListener
+                }
+                this@CreateNoteActivity.tvNoteTitle.text = title
+                this.cancel()
+            }
+        }
+
+        dialog.show()
+
+        val window = dialog.window
+        window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
 
     }
 
@@ -108,7 +134,7 @@ class CreateNoteActivity : AppCompatActivity() {
                     }
                 }
                 Status.LOADING -> {
-
+                    Utility.showToast("Saving your note",this)
                 }
                 Status.ERROR -> {
                     Utility.showToast(it.message.toString(),this)
