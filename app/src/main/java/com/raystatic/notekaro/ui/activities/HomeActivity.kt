@@ -56,12 +56,16 @@ class HomeActivity : AppCompatActivity() {
 
     private fun subscribeToObservers() {
 
+        vm.currentNotes.observe(this, Observer {
+            notesRvAdapter.setData(it)
+        })
+
         vm.notes.observe(this, Observer {
             when(it.status){
 
                 Status.SUCCESS -> {
                     it.data?.let {res->
-                        val notes = res._notes?.asReversed()
+                        val notes = res._notes
 
                         progress_home.hide()
 
@@ -73,7 +77,9 @@ class HomeActivity : AppCompatActivity() {
                         }else{
                             linMessage.hide()
                             rvNotes.show()
-                            notesRvAdapter.setData(notes)
+                            notes.forEach {n->
+                                vm.addNoteToLocal(n)
+                            }
                         }
 
                     }

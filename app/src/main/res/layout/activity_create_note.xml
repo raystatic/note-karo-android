@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back_arrow"
             android:background="@drawable/icon_background"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            android:id="@+id/imgBack"/>
 
 <!--        <androidx.cardview.widget.CardView-->
 <!--            android:layout_width="wrap_content"-->
@@ -52,6 +53,7 @@
             android:layout_alignParentEnd="true"
             app:cornerRadius="10dp"
             android:padding="10dp"
+            android:id="@+id/btnSave"
             android:layout_centerVertical="true"/>
 
 
@@ -68,7 +70,11 @@
         android:singleLine="false"
         android:minHeight="80dp"
         android:padding="10dp"
-        android:textColor="@color/white"/>
+        android:maxLines="2"
+        android:gravity="top|left"
+        android:visibility="visible"
+        android:textColor="@color/white"
+        android:id="@+id/etTitle"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -88,6 +94,7 @@
             android:textCursorDrawable="@null"
             android:gravity="top|left"
             android:scrollbars="vertical"
+            android:id="@+id/etText"
             android:textColor="@color/white"/>
 
     </ScrollView>

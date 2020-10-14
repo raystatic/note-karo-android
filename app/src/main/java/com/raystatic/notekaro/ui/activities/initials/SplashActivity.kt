@@ -32,8 +32,6 @@ class SplashActivity : AppCompatActivity() {
     @Inject
     lateinit var prefManager: PrefManager
 
-    private lateinit var mGoogleSignInClient: GoogleSignInClient
-
     private val vm: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,15 +46,11 @@ class SplashActivity : AppCompatActivity() {
             startActivity(Intent(this, AuthActivity::class.java))
             finish()
         }else{
-            val gso =
-                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .build()
-
-            mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
             progress_splash.show()
-            signIn()
+            val authRequest = AuthRequest(name, email, avatar)
+
+            vm.authenticateUser(authRequest)
 
             subscribeToObservers()
         }
@@ -103,40 +97,4 @@ class SplashActivity : AppCompatActivity() {
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_SIGN_IN) {
-            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignInResult(task)
-        }
-    }
-
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-        try {
-            val account: GoogleSignInAccount? = completedTask.getResult(ApiException::class.java)
-
-            val name:String = account?.displayName.toString()
-            val email:String = account?.email.toString()
-            val avatar:String = account?.photoUrl.toString()
-
-            val authRequest = AuthRequest(name, email, avatar)
-
-            vm.authenticateUser(authRequest)
-
-        } catch (e: ApiException) {
-            Timber.d("signInResult:failed code=" + e.statusCode)
-            progress_splash.hide()
-            Utility.showToast(Constants.SOMETHING_WENT_WRONG,this)
-        }
-
-    }
-
-    private fun signIn() {
-        val signInIntent = mGoogleSignInClient.signInIntent
-        startActivityForResult(signInIntent,
-            RC_SIGN_IN
-        )
-
-    }
 }
