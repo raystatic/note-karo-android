@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/lime"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Give your note a title"
+        android:textColor="@color/custom_black"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:id="@+id/etTitleHeading"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etTitle"
+        android:layout_below="@id/etTitleHeading"
+        android:layout_marginTop="10dp"
+        android:hint="Untitled"
+        android:minHeight="80dp"
+        android:gravity="top"
+        android:textSize="16sp"
+        android:background="@drawable/et_background"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:textColor="@color/custom_black" />
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Save"
+        android:textAllCaps="false"
+        app:cornerRadius="10dp"
+        android:id="@+id/btnSave"
+        android:textCursorDrawable="@null"
+        />
+
+</RelativeLayout>
