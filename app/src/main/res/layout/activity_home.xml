@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/custom_black"
     tools:context=".ui.activities.HomeActivity"
-    android:orientation="vertical"
     android:padding="10dp">
 
     <RelativeLayout
@@ -85,6 +84,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="20dp"
-        />
+        android:id="@+id/fabNewNote"/>
 
 </RelativeLayout>

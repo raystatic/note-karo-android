@@ -42,6 +42,10 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun providesNotesDao(db:NotesDb) = db.getNotesDao()
+
+    @Singleton
+    @Provides
     fun providePrefManager(@ApplicationContext context:Context) = PrefManager(context)
 
     @Singleton

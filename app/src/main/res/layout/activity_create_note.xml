@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/custom_black"
+    tools:context=".ui.activities.CreateNoteActivity"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/createNoteAppBar">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back_arrow"
+            android:background="@drawable/icon_background"
+            android:padding="8dp"
+            android:id="@+id/imgBack"/>
+
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            app:cardCornerRadius="5dp">-->
+<!--            -->
+<!--            <RelativeLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@color/custom_grey"-->
+<!--                android:padding="8dp">-->
+
+<!--                <ImageView-->
+<!--                    android:layout_width="30dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:src="@drawable/ic_edit_pen"/>-->
+
+<!--            </RelativeLayout>-->
+
+<!--        </androidx.cardview.widget.CardView>-->
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/custom_grey"
+            android:layout_alignParentEnd="true"
+            app:cornerRadius="10dp"
+            android:padding="10dp"
+            android:id="@+id/btnSave"
+            android:layout_centerVertical="true"/>
+
+
+    </RelativeLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="26sp"
+        android:hint="Title"
+        android:textColorHint="@color/custom_grey"
+        android:background="@null"
+        android:textCursorDrawable="@null"
+        android:singleLine="false"
+        android:minHeight="80dp"
+        android:padding="10dp"
+        android:maxLines="2"
+        android:gravity="top|left"
+        android:visibility="visible"
+        android:textColor="@color/white"
+        android:id="@+id/etTitle"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:hint="Type something..."
+            android:textColorHint="@color/custom_grey"
+            android:background="@null"
+            android:singleLine="false"
+            android:minHeight="500dp"
+            android:padding="10dp"
+            android:textCursorDrawable="@null"
+            android:gravity="top|left"
+            android:scrollbars="vertical"
+            android:id="@+id/etText"
+            android:textColor="@color/white"/>
+
+    </ScrollView>
+
+
+
+</LinearLayout>

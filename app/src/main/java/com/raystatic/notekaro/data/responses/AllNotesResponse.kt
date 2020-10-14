@@ -5,5 +5,6 @@ import com.raystatic.notekaro.data.local.notes.Note
 data class AllNotesResponse(
     var _notes: List<Note>?=null,
     val success: Boolean,
-    var message:String?=""
+    var message:String?="",
+    var _note:Note?=null
 )

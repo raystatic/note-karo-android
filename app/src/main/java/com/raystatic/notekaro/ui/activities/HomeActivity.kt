@@ -1,5 +1,6 @@
 package com.raystatic.notekaro.ui.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -41,6 +42,10 @@ class HomeActivity : AppCompatActivity() {
         rvNotes.layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
         rvNotes.adapter = notesRvAdapter
 
+        fabNewNote.setOnClickListener {
+            startActivity(Intent(this,CreateNoteActivity::class.java))
+        }
+
         vm.getAllNotes(token)
 
         progress_home.show()
@@ -51,12 +56,16 @@ class HomeActivity : AppCompatActivity() {
 
     private fun subscribeToObservers() {
 
+        vm.currentNotes.observe(this, Observer {
+            notesRvAdapter.setData(it)
+        })
+
         vm.notes.observe(this, Observer {
             when(it.status){
 
                 Status.SUCCESS -> {
                     it.data?.let {res->
-                        val notes = res._notes?.asReversed()
+                        val notes = res._notes
 
                         progress_home.hide()
 
@@ -68,7 +77,9 @@ class HomeActivity : AppCompatActivity() {
                         }else{
                             linMessage.hide()
                             rvNotes.show()
-                            notesRvAdapter.setData(notes)
+                            notes.forEach {n->
+                                vm.addNoteToLocal(n)
+                            }
                         }
 
                     }

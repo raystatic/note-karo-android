@@ -13,4 +13,14 @@
     <color name="brown">#9E5C32</color>
     <color name="custom_grey">#3A3A3A</color>
     <color name="white">#fff</color>
+
+    <array name="colors">
+        <item>#FE9A37</item>
+        <item>#CBDB57</item>
+        <item>#9585BA</item>
+        <item>#5C4F45</item>
+        <item>#F96A4B</item>
+        <item>#DEA44D</item>
+        <item>#9E5C32</item>
+    </array>
 </resources>
