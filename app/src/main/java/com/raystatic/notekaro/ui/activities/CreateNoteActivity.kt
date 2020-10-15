@@ -3,6 +3,7 @@ package com.raystatic.notekaro.ui.activities
 import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -10,6 +11,7 @@ import androidx.lifecycle.Observer
 import com.raystatic.notekaro.R
 import com.raystatic.notekaro.data.local.notes.Note
 import com.raystatic.notekaro.data.requests.CreateNoteRequest
+import com.raystatic.notekaro.data.requests.UpdateNoteRequest
 import com.raystatic.notekaro.other.Constants
 import com.raystatic.notekaro.other.PrefManager
 import com.raystatic.notekaro.other.Status
@@ -19,6 +21,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.sasikanth.colorsheet.ColorSheet
 import dev.sasikanth.colorsheet.utils.ColorSheetUtils
 import kotlinx.android.synthetic.main.activity_create_note.*
+import kotlinx.android.synthetic.main.activity_create_note.imgBack
+import kotlinx.android.synthetic.main.activity_create_note.tvNoteTitle
+import kotlinx.android.synthetic.main.activity_show_note.*
 import kotlinx.android.synthetic.main.title_dialog.view.*
 import timber.log.Timber
 import java.lang.Math.random
@@ -35,6 +40,8 @@ class CreateNoteActivity : AppCompatActivity() {
 
     private var selectedColor: Int = ColorSheet.NO_COLOR
 
+    private var isUpdatable = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_note)
@@ -44,6 +51,17 @@ class CreateNoteActivity : AppCompatActivity() {
         note?.let {
             tvNoteTitle.text = it.title
             etText.setText(it.text)
+            isUpdatable = true
+        }
+
+        tvNoteTitle.apply {
+            ellipsize = TextUtils.TruncateAt.MARQUEE
+            setSingleLine()
+            marqueeRepeatLimit = 10
+            isFocusable = true
+            setHorizontallyScrolling(true)
+            isFocusableInTouchMode = true
+            requestFocus()
         }
 
         imgBack.setOnClickListener {
@@ -52,7 +70,6 @@ class CreateNoteActivity : AppCompatActivity() {
 
         val colors = resources.getIntArray(R.array.colors)
 
-     //   selectedColor = savedInstanceState?.getInt(COLOR_SELECTED) ?: colors.first()
 
         tvNoteTitle.setOnClickListener {
             showTitleDialog()
@@ -78,16 +95,23 @@ class CreateNoteActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            selectedColor = colors[Random.nextInt(0,6)]
-            val themeColor = ColorSheetUtils.colorToHex(selectedColor)
-
-            Timber.d("theme color choosen $themeColor")
-
-            val createNoteRequest = CreateNoteRequest(title.trim(), text, themeColor)
-
             val token = prefManager.getString(Constants.JWT_TOKEN).toString()
 
-            vm.createNewNote(token, createNoteRequest)
+            if (isUpdatable){
+
+                val updateNoteRequest = UpdateNoteRequest(title,text, note?.color.toString(), note?._id.toString())
+
+                vm.updateExistingNote(token, updateNoteRequest)
+            }else{
+                selectedColor = colors[Random.nextInt(0,6)]
+                val themeColor = ColorSheetUtils.colorToHex(selectedColor)
+
+                Timber.d("theme color choosen $themeColor")
+
+                val createNoteRequest = CreateNoteRequest(title.trim(), text, themeColor)
+
+                vm.createNewNote(token, createNoteRequest)
+            }
         }
 
         subscribeToObservers()
@@ -121,6 +145,25 @@ class CreateNoteActivity : AppCompatActivity() {
     }
 
     private fun subscribeToObservers() {
+
+        vm.updateNoteResponse.observe(this, Observer {
+            when(it.status){
+                Status.SUCCESS -> {
+                    it.data?.let {res->
+                        res._note?.let { it1 ->
+                            vm.updateNoteToLocal(it1)
+                            finish()
+                        }
+                    }
+                }
+                Status.LOADING -> {
+                    Utility.showToast("Updating Note", this)
+                }
+                Status.ERROR -> {
+                    Utility.showToast(it.message.toString(),this)
+                }
+            }
+        })
 
         vm.createdNote.observe(this, Observer {
             when(it.status){

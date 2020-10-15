@@ -64,7 +64,10 @@ class HomeActivity : AppCompatActivity(), NotesRvAdapter.NotesListener {
     private fun subscribeToObservers() {
 
         vm.currentNotes.observe(this, Observer {
-            notesRvAdapter.setData(it)
+            it?.let {
+                notesRvAdapter.setData(it)
+            }
+
         })
 
         vm.notes.observe(this, Observer {
@@ -84,6 +87,7 @@ class HomeActivity : AppCompatActivity(), NotesRvAdapter.NotesListener {
                         }else{
                             linMessage.hide()
                             rvNotes.show()
+                            vm.deleteAllNotesFromLocal()
                             notes.forEach {n->
                                 vm.addNoteToLocal(n)
                             }
