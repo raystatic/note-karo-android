@@ -33,6 +33,7 @@
             android:layout_toEndOf="@+id/imgBack"
             android:layout_toStartOf="@+id/btnSave"
             android:textAlignment="center"
+            android:singleLine="true"
             android:id="@+id/tvNoteTitle"
             />
 

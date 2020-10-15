@@ -4,6 +4,8 @@ import com.raystatic.notekaro.data.local.notes.Note
 import com.raystatic.notekaro.data.local.notes.NotesDao
 import com.raystatic.notekaro.data.remote.ApiHelper
 import com.raystatic.notekaro.data.requests.CreateNoteRequest
+import com.raystatic.notekaro.data.requests.UpdateNoteRequest
+import timber.log.Timber
 import javax.inject.Inject
 
 class NotesRepository @Inject constructor(
@@ -16,9 +18,16 @@ class NotesRepository @Inject constructor(
 
     suspend fun createNewNote(token: String, createNoteRequest: CreateNoteRequest) = apiHelper.createNewNote(token, createNoteRequest)
 
+    suspend fun updateExistingNote(token: String, updateNoteRequest: UpdateNoteRequest) = apiHelper.updateExistingNote(token, updateNoteRequest)
+
 
     //local
-    suspend fun insertNote(note:Note) = notesDao.insertNote(note)
+    suspend fun insertNote(note:Note) {
+        Timber.d("notesdao $notesDao")
+        notesDao.insertNote(note)
+    }
+
+    suspend fun updateNote(note: Note) = notesDao.updateNote(note)
 
     suspend fun deleteAllNotes() = notesDao.deleteAllNote()
 

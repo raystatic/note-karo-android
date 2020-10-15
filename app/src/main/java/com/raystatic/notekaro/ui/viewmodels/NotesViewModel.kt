@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.raystatic.notekaro.data.local.notes.Note
 import com.raystatic.notekaro.data.repositories.NotesRepository
 import com.raystatic.notekaro.data.requests.CreateNoteRequest
+import com.raystatic.notekaro.data.requests.UpdateNoteRequest
 import com.raystatic.notekaro.data.responses.AllNotesResponse
 import com.raystatic.notekaro.other.Constants
 import com.raystatic.notekaro.other.NetworkHelper
@@ -21,8 +22,8 @@ class NotesViewModel @ViewModelInject constructor(
 
     private val _notes = MutableLiveData<Resource<AllNotesResponse>>()
     private val _createNote = MutableLiveData<Resource<AllNotesResponse>>()
+    private val _updateNoteResponse =  MutableLiveData<Resource<AllNotesResponse>>()
     private val _currentNotes = MutableLiveData<List<Note>>()
-
 
     val notes: LiveData<Resource<AllNotesResponse>>
         get() = _notes
@@ -30,10 +31,34 @@ class NotesViewModel @ViewModelInject constructor(
     val createdNote:LiveData<Resource<AllNotesResponse>>
         get() = _createNote
 
-    val currentNotes: LiveData<List<Note>> = notesRepository.getAllNotes()
+    val updateNoteResponse:LiveData<Resource<AllNotesResponse>>
+        get() = _updateNoteResponse
+
+    val currentNotes = notesRepository.getAllNotes()
+
+
+    fun updateExistingNote(token: String, updateNoteRequest: UpdateNoteRequest) = viewModelScope.launch {
+        _updateNoteResponse.postValue(Resource.loading(null))
+
+        if (networkHelper.isNetworkConnected()){
+            notesRepository.updateExistingNote(token, updateNoteRequest).let {
+                if (it.isSuccessful){
+                    _updateNoteResponse.postValue(Resource.success(it.body()))
+                }else{
+                    _updateNoteResponse.postValue(Resource.error(Constants.SOMETHING_WENT_WRONG, null))
+                }
+            }
+        }else{
+            _updateNoteResponse.postValue(Resource.error(Constants.NO_INTERNET_CONNECTION, null))
+        }
+    }
 
     fun addNoteToLocal(note:Note) = viewModelScope.launch {
         notesRepository.insertNote(note)
+    }
+
+    fun updateNoteToLocal(note: Note) = viewModelScope.launch {
+        notesRepository.updateNote(note)
     }
 
     fun deleteNoteByIdFromLocal(id:String) = viewModelScope.launch {
@@ -78,5 +103,6 @@ class NotesViewModel @ViewModelInject constructor(
         }
 
     }
+
 
 }

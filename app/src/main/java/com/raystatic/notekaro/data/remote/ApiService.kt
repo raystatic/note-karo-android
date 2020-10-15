@@ -2,13 +2,11 @@ package com.raystatic.notekaro.data.remote
 
 import com.raystatic.notekaro.data.requests.AuthRequest
 import com.raystatic.notekaro.data.requests.CreateNoteRequest
+import com.raystatic.notekaro.data.requests.UpdateNoteRequest
 import com.raystatic.notekaro.data.responses.AllNotesResponse
 import com.raystatic.notekaro.data.responses.AuthResponse
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -21,5 +19,9 @@ interface ApiService {
     @POST("notes")
     suspend fun createNewNote(@Header("auth-token") token:String,
                                 @Body createNoteRequest: CreateNoteRequest):Response<AllNotesResponse>
+
+    @PATCH("notes")
+    suspend fun updateExistingNote(@Header("auth-token") token: String,
+                                    @Body updateNoteRequest: UpdateNoteRequest):Response<AllNotesResponse>
 
 }
