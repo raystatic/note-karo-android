@@ -23,7 +23,7 @@
             android:padding="8dp"
             android:id="@+id/imgBack"/>
 
-        <com.raystatic.notekaro.other.ExpandableTextView
+        <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="This is a demo title"
@@ -42,8 +42,18 @@
             android:src="@drawable/ic_edit_pen"
             android:background="@drawable/icon_background"
             android:padding="8dp"
-            android:layout_alignParentEnd="true"
+            android:layout_toStartOf="@+id/imgDelete"
             android:id="@+id/imgEdit"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_delete"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/imgDelete"
+            android:padding="8dp"
+            android:background="@drawable/icon_background"
+            android:layout_marginStart="10dp"/>
 
     </RelativeLayout>
 

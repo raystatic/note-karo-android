@@ -2,6 +2,7 @@ package com.raystatic.notekaro.data.remote
 
 import com.raystatic.notekaro.data.requests.AuthRequest
 import com.raystatic.notekaro.data.requests.CreateNoteRequest
+import com.raystatic.notekaro.data.requests.DeleteNoteRequest
 import com.raystatic.notekaro.data.requests.UpdateNoteRequest
 import com.raystatic.notekaro.data.responses.AllNotesResponse
 import com.raystatic.notekaro.data.responses.AuthResponse
@@ -23,5 +24,9 @@ interface ApiService {
     @PATCH("notes")
     suspend fun updateExistingNote(@Header("auth-token") token: String,
                                     @Body updateNoteRequest: UpdateNoteRequest):Response<AllNotesResponse>
+
+    @HTTP(method = "DELETE", path = "notes", hasBody = true)
+    suspend fun deleteNote(@Header("auth-token") token: String,
+                            @Body deleteNoteRequest: DeleteNoteRequest):Response<AllNotesResponse>
 
 }
