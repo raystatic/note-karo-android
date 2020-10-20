@@ -2,6 +2,7 @@ package com.raystatic.notekaro.data.remote
 
 import com.raystatic.notekaro.data.requests.AuthRequest
 import com.raystatic.notekaro.data.requests.CreateNoteRequest
+import com.raystatic.notekaro.data.requests.DeleteNoteRequest
 import com.raystatic.notekaro.data.requests.UpdateNoteRequest
 import com.raystatic.notekaro.data.responses.AllNotesResponse
 import com.raystatic.notekaro.data.responses.AuthResponse
@@ -16,5 +17,7 @@ interface ApiHelper {
     suspend fun createNewNote(token:String, createNoteRequest: CreateNoteRequest):Response<AllNotesResponse>
 
     suspend fun updateExistingNote(token: String, updateNoteRequest: UpdateNoteRequest):Response<AllNotesResponse>
+
+    suspend fun deleteNote(token: String, deleteNoteRequest: DeleteNoteRequest):Response<AllNotesResponse>
 
 }

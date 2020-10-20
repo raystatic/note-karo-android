@@ -2,6 +2,7 @@ package com.raystatic.notekaro.data.remote
 
 import com.raystatic.notekaro.data.requests.AuthRequest
 import com.raystatic.notekaro.data.requests.CreateNoteRequest
+import com.raystatic.notekaro.data.requests.DeleteNoteRequest
 import com.raystatic.notekaro.data.requests.UpdateNoteRequest
 import com.raystatic.notekaro.data.responses.AllNotesResponse
 import com.raystatic.notekaro.data.responses.AuthResponse
@@ -22,4 +23,9 @@ class ApiHelperImpl @Inject constructor(
         token: String,
         updateNoteRequest: UpdateNoteRequest
     ): Response<AllNotesResponse>  = apiService.updateExistingNote(token, updateNoteRequest)
+
+    override suspend fun deleteNote(
+        token: String,
+        deleteNoteRequest: DeleteNoteRequest
+    ): Response<AllNotesResponse>  = apiService.deleteNote(token, deleteNoteRequest)
 }

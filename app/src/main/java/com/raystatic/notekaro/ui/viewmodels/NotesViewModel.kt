@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.raystatic.notekaro.data.local.notes.Note
 import com.raystatic.notekaro.data.repositories.NotesRepository
 import com.raystatic.notekaro.data.requests.CreateNoteRequest
+import com.raystatic.notekaro.data.requests.DeleteNoteRequest
 import com.raystatic.notekaro.data.requests.UpdateNoteRequest
 import com.raystatic.notekaro.data.responses.AllNotesResponse
 import com.raystatic.notekaro.other.Constants
@@ -24,6 +25,7 @@ class NotesViewModel @ViewModelInject constructor(
     private val _createNote = MutableLiveData<Resource<AllNotesResponse>>()
     private val _updateNoteResponse =  MutableLiveData<Resource<AllNotesResponse>>()
     private val _currentNotes = MutableLiveData<List<Note>>()
+    private val _deleteNoteResponse = MutableLiveData<Resource<AllNotesResponse>>()
 
     val notes: LiveData<Resource<AllNotesResponse>>
         get() = _notes
@@ -35,6 +37,28 @@ class NotesViewModel @ViewModelInject constructor(
         get() = _updateNoteResponse
 
     val currentNotes = notesRepository.getAllNotes()
+
+    val deleteNotesResponse:LiveData<Resource<AllNotesResponse>>
+        get() = _deleteNoteResponse
+
+
+    fun deleteNote(token: String, deleteNoteRequest: DeleteNoteRequest)=  viewModelScope.launch {
+
+        _deleteNoteResponse.postValue(Resource.loading(null))
+
+        if (networkHelper.isNetworkConnected()){
+            notesRepository.deleteNote(token, deleteNoteRequest).let {
+                if (it.isSuccessful){
+                    _deleteNoteResponse.postValue(Resource.success(it.body()))
+                }else{
+                    _deleteNoteResponse.postValue(Resource.error(Constants.SOMETHING_WENT_WRONG, null))
+                }
+            }
+        }else{
+            _deleteNoteResponse.postValue(Resource.error(Constants.NO_INTERNET_CONNECTION, null))
+        }
+
+    }
 
 
     fun updateExistingNote(token: String, updateNoteRequest: UpdateNoteRequest) = viewModelScope.launch {
