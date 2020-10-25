@@ -60,6 +60,11 @@ class HomeActivity : AppCompatActivity(), NotesRvAdapter.NotesListener {
             startActivity(Intent(this,CreateNoteActivity::class.java))
         }
 
+        swipeRefresh.setOnRefreshListener {
+            vm.getAllNotes(token)
+            swipeRefresh.isRefreshing = false
+        }
+
         vm.getAllNotes(token)
 
         progress_home.show()
