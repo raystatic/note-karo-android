@@ -49,14 +49,18 @@ class HomeActivity : AppCompatActivity(), NotesRvAdapter.NotesListener {
         Timber.d("jwt token: ${prefManager.getString(Constants.JWT_TOKEN)}")
 
         val token = prefManager.getString(Constants.JWT_TOKEN).toString()
-        val avatar = prefManager.getString(Constants.USER_AVATAR).toString()
+        val avatar = prefManager.getString(Constants.USER_AVATAR)
 
-        requestManager.apply {
-            load(avatar)
-                .placeholder(R.drawable.ic_baseline_person_24)
-                .error(R.drawable.ic_baseline_person_24)
-                .into(imgAvatar)
+        if (!avatar.isNullOrEmpty()){
+            requestManager.apply {
+                load(avatar)
+                    .placeholder(R.drawable.ic_baseline_person_24)
+                    .error(R.drawable.ic_baseline_person_24)
+                    .into(imgAvatar)
+            }
         }
+
+
 
         rootView.setOnClickListener {
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)

@@ -82,7 +82,10 @@ class AuthActivity : AppCompatActivity() {
                                 vm.insertUser(user)
                                 prefManager.saveString(Constants.USER_NAME, user.name)
                                 prefManager.saveString(Constants.USER_EMAIL, user.email)
-                                prefManager.saveString(Constants.USER_AVATAR, user.avatar)
+                                if (user.avatar == "null")
+                                    prefManager.saveString(Constants.USER_AVATAR, "")
+                                else
+                                    prefManager.saveString(Constants.USER_AVATAR, user.avatar)
                                 prefManager.saveString(Constants.JWT_TOKEN,res._token)
 
                                 startActivity(Intent(this,
@@ -121,7 +124,7 @@ class AuthActivity : AppCompatActivity() {
 
             val name:String = account?.displayName.toString()
             val email:String = account?.email.toString()
-            val avatar:String = account?.photoUrl.toString()
+            val avatar:String = account?.photoUrl?.toString() ?: ""
 
             val authRequest = AuthRequest(name, email, avatar)
 

@@ -40,7 +40,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:id="@+id/imgAvatar"
-                android:src="@drawable/ic_baseline_person_24"/>
+                android:background="@color/white"
+                android:src="@drawable/ic_user"/>
         </androidx.cardview.widget.CardView>
 
     </RelativeLayout>
