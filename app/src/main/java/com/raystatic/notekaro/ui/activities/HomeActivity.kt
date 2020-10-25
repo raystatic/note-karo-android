@@ -1,12 +1,16 @@
 package com.raystatic.notekaro.ui.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.RequestManager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.raystatic.notekaro.R
 import com.raystatic.notekaro.data.local.notes.Note
 import com.raystatic.notekaro.other.Constants
@@ -15,10 +19,12 @@ import com.raystatic.notekaro.other.Status
 import com.raystatic.notekaro.other.Utility
 import com.raystatic.notekaro.other.ViewExtension.hide
 import com.raystatic.notekaro.other.ViewExtension.show
+import com.raystatic.notekaro.ui.activities.initials.AuthActivity
 import com.raystatic.notekaro.ui.adapters.NotesRvAdapter
 import com.raystatic.notekaro.ui.viewmodels.NotesViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.home_bottom_sheet.*
+import kotlinx.android.synthetic.main.home_content.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -34,6 +40,7 @@ class HomeActivity : AppCompatActivity(), NotesRvAdapter.NotesListener {
     private val vm: NotesViewModel by viewModels()
 
     private lateinit var notesRvAdapter:NotesRvAdapter
+    private lateinit var bottomSheetBehavior:BottomSheetBehavior<*>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +58,11 @@ class HomeActivity : AppCompatActivity(), NotesRvAdapter.NotesListener {
                 .into(imgAvatar)
         }
 
+        rootView.setOnClickListener {
+            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
 
         notesRvAdapter = NotesRvAdapter(this)
         rvNotes.layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
@@ -65,12 +77,38 @@ class HomeActivity : AppCompatActivity(), NotesRvAdapter.NotesListener {
             swipeRefresh.isRefreshing = false
         }
 
+        bottomSheetBehavior = BottomSheetBehavior.from(findViewById<View>(R.id.bottom_sheet))
+        cardAvatar.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
+        linLogout.setOnClickListener {
+            val gso =
+                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build()
+
+            val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+            mGoogleSignInClient.signOut()
+            prefManager.saveString(Constants.JWT_TOKEN,"")
+            startActivity(Intent(this, AuthActivity::class.java))
+            finish()
+        }
+
         vm.getAllNotes(token)
 
         progress_home.show()
 
         subscribeToObservers()
 
+    }
+
+    override fun onBackPressed() {
+        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        else
+            super.onBackPressed()
     }
 
     override fun onNoteClicked(note: Note) {
