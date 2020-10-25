@@ -16,6 +16,8 @@ import com.raystatic.notekaro.other.Constants
 import com.raystatic.notekaro.other.PrefManager
 import com.raystatic.notekaro.other.Status
 import com.raystatic.notekaro.other.Utility
+import com.raystatic.notekaro.other.ViewExtension.hide
+import com.raystatic.notekaro.other.ViewExtension.show
 import com.raystatic.notekaro.ui.viewmodels.NotesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import dev.sasikanth.colorsheet.ColorSheet
@@ -112,6 +114,8 @@ class CreateNoteActivity : AppCompatActivity() {
 
                 vm.createNewNote(token, createNoteRequest)
             }
+
+            savingProgress.show()
         }
 
         subscribeToObservers()
@@ -152,15 +156,18 @@ class CreateNoteActivity : AppCompatActivity() {
                     it.data?.let {res->
                         res._note?.let { it1 ->
                             vm.updateNoteToLocal(it1)
+                            savingProgress.hide()
                             finish()
                         }
                     }
                 }
                 Status.LOADING -> {
                     Utility.showToast("Updating Note", this)
+                    savingProgress.show()
                 }
                 Status.ERROR -> {
                     Utility.showToast(it.message.toString(),this)
+                    savingProgress.hide()
                 }
             }
         })
@@ -172,15 +179,18 @@ class CreateNoteActivity : AppCompatActivity() {
                         Utility.showToast("Note created successfully",this)
                         res._note?.let { it1 ->
                             vm.addNoteToLocal(it1)
+                            savingProgress.hide()
                             finish()
                         }
                     }
                 }
                 Status.LOADING -> {
+                    savingProgress.show()
                     Utility.showToast("Saving your note",this)
                 }
                 Status.ERROR -> {
                     Utility.showToast(it.message.toString(),this)
+                    savingProgress.hide()
                 }
             }
         })
