@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.bumptech.glide.RequestManager
 import com.raystatic.notekaro.R
 import com.raystatic.notekaro.data.local.notes.Note
 import com.raystatic.notekaro.other.Constants
@@ -27,6 +28,9 @@ class HomeActivity : AppCompatActivity(), NotesRvAdapter.NotesListener {
     @Inject
     lateinit var prefManager:PrefManager
 
+    @Inject
+    lateinit var requestManager:RequestManager
+
     private val vm: NotesViewModel by viewModels()
 
     private lateinit var notesRvAdapter:NotesRvAdapter
@@ -38,6 +42,15 @@ class HomeActivity : AppCompatActivity(), NotesRvAdapter.NotesListener {
         Timber.d("jwt token: ${prefManager.getString(Constants.JWT_TOKEN)}")
 
         val token = prefManager.getString(Constants.JWT_TOKEN).toString()
+        val avatar = prefManager.getString(Constants.USER_AVATAR).toString()
+
+        requestManager.apply {
+            load(avatar)
+                .placeholder(R.drawable.ic_baseline_person_24)
+                .error(R.drawable.ic_baseline_person_24)
+                .into(imgAvatar)
+        }
+
 
         notesRvAdapter = NotesRvAdapter(this)
         rvNotes.layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)

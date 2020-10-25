@@ -104,6 +104,11 @@ dependencies {
     //color picker
     implementation "dev.sasikanth:colorsheet:1.0.1"
 
+    // Google Drive
+    implementation "com.google.android.gms:play-services-auth:18.1.0"
+    implementation "com.google.android.gms:play-services-drive:17.0.0"
+    implementation 'com.squareup.okio:okio:2.8.0'
+
 
     // Local Unit Tests
     implementation "androidx.test:core:1.2.0"

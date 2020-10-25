@@ -21,13 +21,26 @@
             android:textColor="@color/white"
             android:textSize="26sp"/>
 
-        <ImageButton
+<!--        <ImageButton-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/ic_action_search"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:background="@drawable/icon_background"-->
+<!--            android:padding="8dp"/>-->
+
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_search"
             android:layout_alignParentEnd="true"
-            android:background="@drawable/icon_background"
-            android:padding="8dp"/>
+            app:cardCornerRadius="360dp"
+            android:id="@+id/cardAvatar">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imgAvatar"
+                android:src="@drawable/ic_baseline_person_24"/>
+        </androidx.cardview.widget.CardView>
 
     </RelativeLayout>
 

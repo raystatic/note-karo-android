@@ -2,6 +2,8 @@ package com.raystatic.notekaro.di
 
 import android.content.Context
 import androidx.room.Room
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.raystatic.notekaro.BuildConfig
 import com.raystatic.notekaro.data.local.NotesDb
 import com.raystatic.notekaro.data.remote.ApiHelper
@@ -24,6 +26,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(ApplicationComponent::class)
 object AppModule {
+
+    @Singleton
+    @Provides
+    fun provideGlide(
+        @ApplicationContext context: Context
+    ): RequestManager = Glide.with(context)
 
     @Singleton
     @Provides
