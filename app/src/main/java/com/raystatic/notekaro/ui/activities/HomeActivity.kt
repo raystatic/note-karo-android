@@ -51,6 +51,8 @@ class HomeActivity : AppCompatActivity(), NotesRvAdapter.NotesListener {
         val token = prefManager.getString(Constants.JWT_TOKEN).toString()
         val avatar = prefManager.getString(Constants.USER_AVATAR)
 
+        Timber.d("avatar: $avatar")
+
         if (!avatar.isNullOrEmpty()){
             requestManager.apply {
                 load(avatar)

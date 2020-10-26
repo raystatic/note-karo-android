@@ -124,7 +124,7 @@ class AuthActivity : AppCompatActivity() {
 
             val name:String = account?.displayName.toString()
             val email:String = account?.email.toString()
-            val avatar:String = account?.photoUrl?.toString() ?: ""
+            val avatar:String = account?.photoUrl.toString()
 
             val authRequest = AuthRequest(name, email, avatar)
 
